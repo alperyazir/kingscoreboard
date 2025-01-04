@@ -156,11 +156,10 @@ const updatePlayerStatsFromLogs = async () => {
   const logs = await getGameLogs();
   const playerStats: { [key: string]: Player } = {};
 
-  // Initialize player stats
-  const players = await getPlayers();
-  players.forEach(player => {
-    playerStats[player.name] = {
-      name: player.name,
+  // Initialize all players with zero stats
+  PLAYERS.forEach(name => {
+    playerStats[name] = {
+      name,
       wins: 0,
       losses: 0,
       total: 0,
@@ -168,7 +167,7 @@ const updatePlayerStatsFromLogs = async () => {
     };
   });
 
-  // Calculate stats from logs (excluding deleted games)
+  // Calculate stats only from non-deleted games
   logs.filter(log => !log.deleted).forEach(log => {
     log.winners.forEach(winner => {
       if (playerStats[winner]) {
@@ -190,6 +189,6 @@ const updatePlayerStatsFromLogs = async () => {
     player.percentage = player.total === 0 ? 0 : (player.wins / player.total) * 100;
   });
 
-  // Update all players
+  // Update all players in Firebase
   await updatePlayerStats(Object.values(playerStats));
 }; 
