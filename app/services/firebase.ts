@@ -3,14 +3,13 @@ import {
   getDocs, 
   addDoc, 
   updateDoc,
-  deleteDoc,
   doc,
   query,
   orderBy,
   writeBatch
 } from 'firebase/firestore';
 import { db } from '../firebase';
-import { Player, GameLog } from '../types';
+import { Player, GameLog, GameLogEdit } from '../types';
 
 // Players
 export const initializePlayers = async (playerNames: string[]) => {
@@ -88,7 +87,6 @@ export const updatePlayerStats = async (players: Player[]) => {
 
 // Game Logs
 export const getGameLogs = async (): Promise<GameLog[]> => {
-  const logsRef = collection(db, 'gameLogs');
   const snapshot = await getDocs(collection(db, 'gameLogs'));
   
   // Convert dates but don't sort
@@ -99,7 +97,7 @@ export const getGameLogs = async (): Promise<GameLog[]> => {
       ...data,
       timestamp: new Date(data.timestamp),
       deletedAt: data.deletedAt ? new Date(data.deletedAt) : undefined,
-      editHistory: data.editHistory?.map((edit: any) => ({
+      editHistory: data.editHistory?.map((edit: GameLogEdit) => ({
         ...edit,
         timestamp: new Date(edit.timestamp)
       }))

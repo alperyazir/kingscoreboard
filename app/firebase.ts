@@ -2,12 +2,12 @@ import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore';
 
 const firebaseConfig = {
-  apiKey: "AIzaSyAr6qTYf81SkIhGwJPFeh-akj2wESnmVf0",
-  authDomain: "kingscoreboard-46007.firebaseapp.com",
-  projectId: "kingscoreboard-46007",
-  storageBucket: "kingscoreboard-46007.firebasestorage.app",
-  messagingSenderId: "770704393336",
-  appId: "1:770704393336:web:7031d5efc3b5d26597598d"
+  apiKey: process.env.NEXT_PUBLIC_FIREBASE_API_KEY,
+  authDomain: process.env.NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN,
+  projectId: process.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID,
+  storageBucket: process.env.NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET,
+  messagingSenderId: process.env.NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID,
+  appId: process.env.NEXT_PUBLIC_FIREBASE_APP_ID
 };
 
 const app = initializeApp(firebaseConfig);

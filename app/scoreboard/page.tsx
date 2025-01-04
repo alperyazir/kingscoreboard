@@ -1,11 +1,11 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, Suspense } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { Player, GameLog, GameLogEdit, PLAYERS } from '../types';
 import * as FirebaseService from '../services/firebase';
 
-export default function ScoreboardPage() {
+function ScoreboardContent() {
   const searchParams = useSearchParams();
   const router = useRouter();
   const currentPlayer = searchParams.get('player');
@@ -99,39 +99,6 @@ export default function ScoreboardPage() {
     setSelectedWinners(game.winners);
     setSelectedLosers(game.losers);
     setShowNewGameModal(true);
-  };
-
-  // Helper function to recalculate player statistics
-  const recalculatePlayerStats = (logs: GameLog[]) => {
-    const updatedPlayers = PLAYERS.map(name => {
-      // Only count games where the player was selected
-      const playerGames = logs.filter(
-        log => log.winners.includes(name) || log.losers.includes(name)
-      );
-      
-      if (playerGames.length === 0) {
-        // Player hasn't participated in any games
-        return {
-          name,
-          wins: 0,
-          losses: 0,
-          total: 0,
-          percentage: 0
-        };
-      }
-
-      const wins = playerGames.filter(log => log.winners.includes(name)).length;
-      const total = playerGames.length;
-      
-      return {
-        name,
-        wins,
-        losses: total - wins,
-        total,
-        percentage: (wins / total) * 100
-      };
-    });
-    return updatedPlayers;
   };
 
   const handleDeleteGame = async (game: GameLog) => {
@@ -509,5 +476,17 @@ export default function ScoreboardPage() {
         </div>
       )}
     </div>
+  );
+}
+
+export default function ScoreboardPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-green-800 flex items-center justify-center">
+        <div className="text-white text-2xl">Yükleniyor...</div>
+      </div>
+    }>
+      <ScoreboardContent />
+    </Suspense>
   );
 } 
