@@ -11,6 +11,9 @@ import {
 import { db } from '../firebase';
 import { Player, GameLog, GameLogEdit } from '../types';
 
+// Define players constant
+const PLAYERS: string[] = ['Tarık', 'Mete', 'Oğuzhan', 'Mali', 'Alper'];
+
 // Players
 export const initializePlayers = async (playerNames: string[]) => {
   const playersRef = collection(db, 'players');
@@ -157,7 +160,7 @@ const updatePlayerStatsFromLogs = async () => {
   const playerStats: { [key: string]: Player } = {};
 
   // Initialize all players with zero stats
-  PLAYERS.forEach(name => {
+  PLAYERS.forEach((name: string) => {
     playerStats[name] = {
       name,
       wins: 0,
