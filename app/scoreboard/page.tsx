@@ -174,41 +174,9 @@ function ScoreboardContent() {
     player.percentage === topPercentage && player.total > 0
   );
 
-  const ScoreboardTable = ({ players }: { players: Player[] }) => {
-    return (
-      <div className="w-full overflow-x-hidden">
-        <table className="w-full text-sm md:text-base border-collapse">
-          <thead>
-            <tr className="bg-green-800 text-white">
-              <th className="p-2 text-left">Oyuncu</th>
-              <th className="p-2 text-center">Kazandı</th>
-              <th className="p-2 text-center">Kaybetti</th>
-              <th className="p-2 text-center">Toplam</th>
-              <th className="p-2 text-center">Yüzde</th>
-            </tr>
-          </thead>
-          <tbody>
-            {players.map((player, index) => (
-              <tr
-                key={player.name}
-                className={index % 2 === 0 ? 'bg-green-100' : 'bg-green-50'}
-              >
-                <td className="p-2 text-left">{player.name}</td>
-                <td className="p-2 text-center">{player.wins}</td>
-                <td className="p-2 text-center">{player.losses}</td>
-                <td className="p-2 text-center">{player.total}</td>
-                <td className="p-2 text-center">{player.percentage.toFixed(1)}%</td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-    );
-  };
-
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="space-y-8">
+    <div className="min-h-screen bg-green-800 p-8">
+      <div className="max-w-4xl mx-auto">
         <div className="flex flex-col items-center mb-8">
           <h1 className="text-4xl font-bold text-white mb-2">
             King Çetele
@@ -262,9 +230,39 @@ function ScoreboardContent() {
           </div>
         )}
 
-        {/* Skor Tablosu */}
-        <div className="bg-white rounded-lg shadow-xl p-4 md:p-6">
-          <ScoreboardTable players={sortedPlayers} />
+        {/* Scoreboard Table */}
+        <div className="bg-white rounded-lg shadow-xl p-6 mb-6 overflow-auto">
+          <div className="min-w-[600px]"> {/* Minimum genişlik garantisi */}
+            <table className="w-full">
+              <thead>
+                <tr className="border-b-2">
+                  <th className="text-left p-3 font-bold text-gray-900 text-xl">Oyuncu</th>
+                  <th className="p-3 font-bold text-gray-900 text-xl">Kazandı</th>
+                  <th className="p-3 font-bold text-gray-900 text-xl">Kaybetti</th>
+                  <th className="p-3 font-bold text-gray-900 text-xl">Toplam</th>
+                  <th className="p-3 font-bold text-gray-900 text-xl">Yüzde</th>
+                </tr>
+              </thead>
+              <tbody>
+                {sortedPlayers.map((player, index) => (
+                  <tr 
+                    key={player.name} 
+                    className={`border-b hover:bg-gray-100 ${
+                      index % 2 === 0 
+                        ? 'bg-white' 
+                        : 'bg-gray-100'
+                    }`}
+                  >
+                    <td className="p-3 text-gray-900 font-bold text-lg whitespace-nowrap">{player.name}</td>
+                    <td className="p-3 text-center text-gray-900 font-semibold text-lg">{player.wins}</td>
+                    <td className="p-3 text-center text-gray-900 font-semibold text-lg">{player.losses}</td>
+                    <td className="p-3 text-center text-gray-900 font-semibold text-lg">{player.total}</td>
+                    <td className="p-3 text-center text-gray-900 font-semibold text-lg">{player.percentage.toFixed(1)}%</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
         </div>
 
         {/* Responsive padding for mobile */}
@@ -277,9 +275,9 @@ function ScoreboardContent() {
           </button>
         </div>
 
-        {/* Oyun Geçmişi */}
-        <div className="bg-white rounded-lg shadow-xl p-4 md:p-6">
-          <h2 className="text-2xl font-bold mb-4">Oyun Geçmişi</h2>
+        {/* Game History */}
+        <div className="bg-white rounded-lg shadow-xl p-4 sm:p-6">
+          <h2 className="text-2xl sm:text-3xl font-bold mb-6 text-gray-900">Oyun Geçmişi</h2>
           <div className="space-y-4">
             {gameLogs
               .slice()
